@@ -4,6 +4,7 @@ import org.example.Animals.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -11,7 +12,9 @@ public class Main {
         Zoo zooList = new Zoo();
         ArrayList<Animals> addAnimals = new ArrayList<Animals>();
         ArrayList<Animals> animals = new ArrayList<Animals>();
+        ArrayList<String> listOfAnimals = new ArrayList<String>();
         Scanner in = new Scanner(System.in);
+        Scanner in2 = new Scanner(System.in);
 //        System.out.println("Введите имя и дату рождения зверька в формате ДД.ММ.ГГГГ:");
 //
 //        Cats cat = new Cats(in.next(), in.next());
@@ -144,16 +147,21 @@ public class Main {
                 }
                 case 3 -> zooList.printAnimals2();
                 case 4 -> {
-                    System.out.println(View.warning(Text.SearchInfo));
-                    String search = in.next();
-                    zooList.SearchForAnimalInfo(search);
+                    System.out.println(View.warning(Text.searchInfo));
+                    String search = in.nextLine();
+                    String line = zooList.SearchForAnimalInfo(search);
+                    System.out.println("Found string: " + line);
                 }
                 case 5 -> {
-                    System.out.println(View.warning(Text.ModifyAnimalInformation));
-                    String change = in.next();
-                    zooList.SearchForAnimalInfo(change); // чтобы скопировать нужную инфу, а не писать строку целиком на память
+                    System.out.println(View.warning(Text.tip));
+                    listOfAnimals = zooList.FromFileToList();
+                    System.out.println(View.warning(Text.rowNumber));
+                    int pos = in.nextInt();
+                    System.out.println(View.warning(Text.newInfo));
+                    System.out.println(View.warning(Text.msg));
+                    String change = in2.nextLine();
+                    zooList.FromListToFile(listOfAnimals, change, pos);
                 }
-//                    zooList.ModifyAnimalInformation2(change, Text.NewInfo, Text.msg);
                 default -> {
                 }
             }
@@ -162,3 +170,4 @@ public class Main {
 }
 //ID: 39, кличка: Goofy, дата рождения: 12.04.2017, команды: [sit], вид: Dogs
 //ID: 27, кличка: Snoop, дата рождения: 23.01.2020, команды: [sit, lie], вид: Dogs
+//ID: 149, кличка: Kitty, дата рождения: 05.02.2022, команды: [], вид: Cats

@@ -3,10 +3,10 @@ package org.example;
 import org.example.Animals.Animals;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Zoo {
@@ -50,22 +50,51 @@ public class Zoo {
         writer.close();
     }
 
-    public void SearchForAnimalInfo(String str) {
+    public String SearchForAnimalInfo(String str) {
+        String line = null;
         try (BufferedReader reader = Files.newBufferedReader(Paths.get("Animals.txt"))) {
-            String line;
             while ((line = reader.readLine()) != null) {
                 if (line.contains(str)) {
-                    System.out.printf("Found string: %s%n", line);
+                    //System.out.printf("Found string: %s%n", line);
                     break;
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return line;
     }
 
     // Решил сделать таким способом, чтобы можно было редактировать информацию о любом животном даже после перезапуска программы, если затупил и сделал не так, как нужно, извиняюсь, по-другому не сообразил
-    public void ModifyAnimalInformation(String str, String message, String message2) {
+    public ArrayList<String> FromFileToList() {
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get("Animals.txt"))){
+            ArrayList<String> lines = new ArrayList<>();
+            String line;
+            int i = 1;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+            for (String ln: lines) {
+                System.out.println(i+": " + ln);
+                i++;
+            }
+            return lines;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public void FromListToFile(ArrayList<String> lines, String changedLine, int pos) throws IOException {
+        lines.set(pos-1, changedLine);
+        for (String ln: lines) {
+            System.out.println(ln);
+        }
+        FileWriter writer = new FileWriter("Animals.txt");
+        for (String ln : lines) {
+            writer.write(ln + "\n");
+        }
+        writer.flush();
+        writer.close();
     }
 }
+
